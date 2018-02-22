@@ -1,9 +1,11 @@
+import md5
+
 from flask import Flask, render_template, request, redirect, session, flash
 app = Flask(__name__)
 app.secret_key = 'jkfu890342htruo34v7yut8039pthjiopv78t0432-y5t3480wtb342y905n34um20w'
 
 from mysqlconnection import MySQLConnector
-mysql = MySQLConnector(app, 'login_and_registration_db')
+mysql = MySQLConnector(app, 'login_and_reguustration_db')
 
 import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
@@ -35,6 +37,16 @@ def register():
 	email_valid = False
 	password_valid = False
 	passwords_match = False
+
+	# check if email already exists in db
+	query = "SELECT * FROM users WHERE email=:email"
+	data = {'email': session['email']}
+
+	result = mysql.query_db(query, data)
+
+	if len(result) != 0:
+		flash("User already exists.", 'error')
+		return redirect("/")
 
 	# validate first name
 	if session['first_name'].isalpha() and len(session['first_name']) > 1:
@@ -75,10 +87,49 @@ def register():
 
 	# if everything is valid, send the new user to the members page
 	if first_name_valid and last_name_valid and email_valid and password_valid and passwords_match:
-		session['id'] = 1
+		query = "INSERT INTO users (first_name, last_name, email, password, created_at, updated_at) VALUES (:first_name, :last_name, :email, :password, NOW(), NOW())"
+		data = {
+				'first_name': session['first_name'],
+				'last_name': session['last_name'],
+				'email': session['email'],
+				'password': md5.new(session['password']).hexdigest()
+		}
+
+		mysql.query_db(query, data)
+
+		query = "SELECT id FROM users WHERE first_name=:first_name AND last_name=:last_name AND email=:email"
+		data = {
+				'first_name': session['first_name'],
+				'last_name': session['last_name'],
+				'email': session['email']
+		}
+		user = mysql.query_db(query, data)
+		session.clear()
+		session['id'] = user
 		return redirect('/members')
 	# if not valid, try again
 	else:
+		return redirect('/')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+	email = request.form['email']
+	password = request.form['password']
+
+	query = "SELECT * FROM users WHERE email=:email AND password=:password"
+	data = {
+			'email': email,
+			'password': md5.new(password).hexdigest()
+	}
+
+	result = mysql.query_db(query, data)
+
+	if len(result) != 0:
+		session['id'] = result[0]['id']
+		return redirect('/members')
+	else:
+		flash("Incorrect email and password combination", 'error')
 		return redirect('/')
 
 

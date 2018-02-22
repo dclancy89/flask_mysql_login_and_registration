@@ -50,6 +50,7 @@ label, input {
 	border: none;
 	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	transition: opacity 0.2s ease 0s;
+	color: black;
 }
 
 .button:hover {

@@ -32,9 +32,9 @@ def register():
 
 	first_name_valid = False
 	last_name_valid = False
-	email_valid = True
-	password_valid = True
-	passwords_match = True
+	email_valid = False
+	password_valid = False
+	passwords_match = False
 
 	# validate first name
 	if session['first_name'].isalpha() and len(session['first_name']) > 1:
@@ -54,9 +54,30 @@ def register():
 		if len(session['last_name']) < 2:
 			flash("Last name must be at least two characters long.", 'error')
 
+	# validate email
+	if EMAIL_REGEX.match(session['email']):
+		email_valid = True
+	else:
+		flash('Must submit a valid email address.', 'error')
+
+	# validate password
+	if len(session['password']) > 8:
+		password_valid = True
+	else:
+		flash('Password must be at least 8 characters long.', 'error')
+
+	# check if passwords match
+	if session['password'] == session['confirm_pw']:
+		passwords_match = True
+	else:
+		flash("Passwords must match.", 'error')
+
+
+	# if everything is valid, send the new user to the members page
 	if first_name_valid and last_name_valid and email_valid and password_valid and passwords_match:
 		session['id'] = 1
 		return redirect('/members')
+	# if not valid, try again
 	else:
 		return redirect('/')
 

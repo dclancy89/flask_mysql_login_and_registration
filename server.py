@@ -97,7 +97,7 @@ def register():
 
 		mysql.query_db(query, data)
 
-		query = "SELECT id FROM users WHERE first_name=:first_name AND last_name=:last_name AND email=:email"
+		query = "SELECT * FROM users WHERE first_name=:first_name AND last_name=:last_name AND email=:email"
 		data = {
 				'first_name': session['first_name'],
 				'last_name': session['last_name'],
@@ -105,7 +105,8 @@ def register():
 		}
 		user = mysql.query_db(query, data)
 		session.clear()
-		session['id'] = user
+		session['id'] = user[0]['id']
+		session['first_name'] = user[0]['first_name']
 		return redirect('/members')
 	# if not valid, try again
 	else:
@@ -123,10 +124,11 @@ def login():
 			'password': md5.new(password).hexdigest()
 	}
 
-	result = mysql.query_db(query, data)
+	user = mysql.query_db(query, data)
 
-	if len(result) != 0:
-		session['id'] = result[0]['id']
+	if len(user) != 0:
+		session['id'] = user[0]['id']
+		session['first_name'] = user[0]['first_name']
 		return redirect('/members')
 	else:
 		flash("Incorrect email and password combination", 'error')

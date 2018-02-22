@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-Welcome to the members area {{ session['id'] }}.
+Welcome to the members area {{ session['first_name'] }}.
 <a href="/logout" class="button">Logout</a>
 </body>
 </html>

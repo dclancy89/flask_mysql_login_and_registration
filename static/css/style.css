@@ -10,6 +10,10 @@ body {
 	padding: 2rem 0;
 }
 
+h1 {
+	text-align: center;
+}
+
 .col-1-2 {
 	display: table-cell;
 	width: 50%;
@@ -43,7 +47,7 @@ label, input {
 
 .button {
 	display: table;
-	margin: 1rem 0;
+	margin: 1rem 4rem 1rem auto;
 	background-color: #1ba2fc;
 	border-radius: 0;
 	padding: 5px 10px;
@@ -57,3 +61,34 @@ label, input {
 	opacity: 0.7;
 	cursor: pointer;
 }
+
+.messages {
+	max-width: 400px;
+	min-height: 175px;
+	width: 100%;
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	padding-top: 2rem;
+}
+
+.messages ul {
+	list-style: none;
+}
+
+.messages ul li {
+	font-size: 1.25rem;
+}
+
+.error {
+	color: red;
+}
+
+.success {
+	color: green;
+}
+
+
+
+
+

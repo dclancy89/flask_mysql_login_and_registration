@@ -1,0 +1,58 @@
+body {
+	font-family: Helvetica;
+}
+
+.container {
+	max-width: 75rem;
+	width: 100%;
+	display: table;
+	margin: 0 auto;
+	padding: 2rem 0;
+}
+
+.col-1-2 {
+	display: table-cell;
+	width: 50%;
+}
+
+form {
+	max-width: 400px;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+label {
+	display: inline-block;
+	width: 100px;
+	margin: 8px 0;
+}
+
+input[type="text"], input[type="password"] {
+	display: inline-block;
+	width: 230px;
+}
+
+form p {
+	text-decoration: underline;
+}
+
+label, input {
+	font-size: 16px;
+}
+
+.button {
+	display: table;
+	margin: 1rem 0;
+	background-color: #1ba2fc;
+	border-radius: 0;
+	padding: 5px 10px;
+	border: none;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	transition: opacity 0.2s ease 0s;
+}
+
+.button:hover {
+	opacity: 0.7;
+	cursor: pointer;
+}
